@@ -1,0 +1,70 @@
+# Screenshot and Text Extraction using Selenium
+
+This script captures a screenshot of a webpage and extracts its text using Selenium and clipboard operations.
+
+## Features
+
+- Captures a full-page screenshot.
+- Extracts text content from the webpage.
+- Uses Selenium for browser automation.
+
+## Prerequisites
+
+Ensure you have the following installed:
+
+- Python 3.x
+- Google Chrome (latest version)
+- Chrome WebDriver (compatible with your Chrome version)
+
+## Installation and Setup
+
+### 1. Clone the Repository
+
+```sh
+git clone <repository-url>
+cd <repository-folder>
+```
+
+### 2. Create a Virtual Environment
+
+For Windows:
+
+```sh
+python -m venv venv
+venv\Scripts\activate
+```
+
+For macOS/Linux:
+
+```sh
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+Ensure you have `pip` updated:
+
+```sh
+pip install --upgrade pip
+```
+
+Install required libraries:
+
+```sh
+pip install -r requirements.txt
+```
+
+### 4. Run the Script
+
+```sh
+python main.py
+```
+
+## Notes
+
+- The script waits for the page to load before capturing text.
+- It simulates `Ctrl + A` and `Ctrl + C` to copy text from the page.
+- The extracted text is stored in the clipboard and printed in the console.
+- You can modify the script to store extracted text in a file.
+
