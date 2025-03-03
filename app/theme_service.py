@@ -41,7 +41,7 @@ def capture_screenshot_and_extract_css(url, screenshot_path="screenshot.png"):
         
         messages = [
             {"role": "system", "content": "You are an expert in Tailwind CSS."},
-            {"role": "user", "content": [{"type": "text", "text": " Please extract the Tailwind CSS @theme part in a very deatialed manner from the screenshot. So that it would be usefull in creating a site with identical elemnets. give only the theme part."},
+            {"role": "user", "content": [{"type": "text", "text": " Please extract the Tailwind CSS @theme part in a very detailed manner from the screenshot. So that it would be usefull in creating a site with identical elemnets. give only the theme part."},
             {"type": "image", "image": base64_image}]}
         ]
         response = client.chat.completions.create(
