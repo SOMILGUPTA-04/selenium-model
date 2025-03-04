@@ -7,15 +7,20 @@ from selenium.webdriver.common.action_chains import ActionChains
 import pyperclip
 import time
 from dotenv import load_dotenv
+from PIL import Image
 import os
+import io
 import json
+import re
+from azure.core.credentials import AzureKeyCredential
+from azure.ai.inference import ChatCompletionsClient
+from openai import AzureOpenAI
 
 load_dotenv()
 
-openai_api_key=os.getenv("openai_api_key")
-openai_endpoint=os.getenv("openai_endpoint")
-openai_version=os.getenv("openai_version")
-openai_model_o4=os.getenv("openai_model_o4")
+llama_token=os.getenv("llama_token")
+llama_endpoint=os.getenv("llama_end")
+llama_model=os.getenv("llama_model")
 
 def capture_screenshot_and_extract_css(url, screenshot_path="screenshot.png"):
     chrome_options = Options()
@@ -30,25 +35,27 @@ def capture_screenshot_and_extract_css(url, screenshot_path="screenshot.png"):
         driver.save_screenshot(screenshot_path)
         driver.quit()
 
+        screenshot_path = "screenshot.png"
         with open(screenshot_path, "rb") as img_file:
             base64_image = base64.b64encode(img_file.read()).decode("utf-8")
+
         
-        client = openai.AzureOpenAI(
-            api_key=openai_api_key,
-            api_version=openai_version,
-            azure_endpoint=openai_endpoint
-        )
+        client = ChatCompletionsClient(
+                endpoint=llama_endpoint,
+                credential=AzureKeyCredential(llama_token)
+            )
         
         messages = [
             {"role": "system", "content": "You are an expert in Tailwind CSS."},
-            {"role": "user", "content": [{"type": "text", "text": " Please extract the Tailwind CSS @theme part in a very detailed manner from the screenshot. So that it would be usefull in creating a site with identical elemnets. give only the theme part."},
+            {"role": "user", "content": [{"type": "text", "text": "Extract the full @theme configuration for this screenshot with precise details. Capture all colors (including CTA buttons), typography, spacing, border-radius, and shadows accurately. Provide exact hex or RGB values to match the original design for an identical site recreation."},
             {"type": "image", "image": base64_image}]}
         ]
-        response = client.chat.completions.create(
-            model=openai_model_o4,
+        
+        response = client.complete(
+            model=llama_model,  # Your deployment name in Azure
             messages=messages
         )
-        return response.choices[0].message.content, base64_image
+        return response.choices[0].message.content
     
     except Exception as e:
         driver.quit()

@@ -28,7 +28,7 @@ async def serve_form():
 
 @app.post("/process")
 async def process_url(url: str = Form(...)):
-    tailwind_css, base64_image = capture_screenshot_and_extract_css(url)
+    tailwind_css = capture_screenshot_and_extract_css(url)
     return {
         "tailwind_css": tailwind_css,
     }
